@@ -21,8 +21,14 @@ export class JwtAdapter {
   }
 
   // Validar token
-  static validateToken(token: string) {
-    throw new Error("Not implemented");
-    return;
+  // <T> es un estandar que significa que vamos a recibir cualquier cosa (string, dict, array) lo que sea pero el tipo que reciba tiene que retornarlo.
+  static validateToken<T>(token: string): Promise<T | null> {
+    return new Promise((resolve) => {
+      jwt.verify(token, JWT_SEED, (err, decoded) => {
+        if (err) return resolve(null);
+
+        resolve(decoded as T);
+      });
+    });
   }
 }
