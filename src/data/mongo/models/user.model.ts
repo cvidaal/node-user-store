@@ -28,4 +28,15 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// Esto sirve para quitar como se presentan los datos en el json.
+// En este caso no mostramos la contraseña, y el _id se ve como (id: 'asjsdjsajs') ya no como _id: 'ajsjdajksa'
+userSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform(doc, ret, options) {
+    const { _id, password, ...rest } = ret;
+    return { id: _id, ...rest };
+  },
+});
+
 export const UserModel = mongoose.model("User", userSchema);
